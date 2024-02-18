@@ -26,6 +26,8 @@ function Forms({ formData, btnText, title, hasButton, onSubmit }) {
                   placeholder={input.placeholder}
                   className="px-3 py-2 bg-gray-200 text-white rounded-sm border-none focus:outline-0"
                   {...formik.getFieldProps(input.name)}
+                  value={formik.values[input.name]}
+                  required
                 />
                 {formik.touched[input.name] && formik.errors[input.name] && (
                   <span className="text-red-500">
@@ -48,6 +50,7 @@ function Forms({ formData, btnText, title, hasButton, onSubmit }) {
                 <select
                   id={input.label}
                   name={input.name}
+                  required
                   value={formik.values[input.name]}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}

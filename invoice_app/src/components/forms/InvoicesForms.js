@@ -1,103 +1,64 @@
 import React from "react";
 import Header from "../header";
 import Forms from ".";
+import { useNavigate } from "react-router-dom";
+import generateId from "../../utils/idGenerator";
 
 function InvoicesForms() {
-  const payment_terms = [
-    { terms: "Net 30 days" },
-    { terms: "Net 20 days" },
-    { terms: "Net 15 days" },
+  const navigate = useNavigate();
+  const status = [
+    { option: "Paid" },
+    { option: "Pending" },
+    { option: "Drafting" },
   ];
 
-  const paymentOptions = payment_terms.map((terms) => ({
-    label: terms.terms,
-    value: terms.terms,
+  const statusOptions = status.map((terms) => ({
+    label: terms.option,
+    value: terms.option,
   }));
 
   const billForm = [
     {
-      label: "Address",
-      name: "address",
+      label: "User",
+      name: "user",
       type: "text",
-      placeholder: "Street address",
+      placeholder: "User Name",
       value: "",
     },
     {
-      label: "City",
-      name: "city",
+      label: "Description",
+      name: "description",
       type: "text",
-      placeholder: "Enter city name",
+      placeholder: "Description",
       value: "",
     },
     {
-      label: "Country",
-      name: "country",
-      type: "text",
-      placeholder: "Enter country name",
-      value: "",
-    },
-    {
-      label: "Post Code",
-      name: "postCode",
-      type: "text",
-      placeholder: "Enter postCode name",
-      value: "",
-    },
-  ];
-  const billToData = [
-    {
-      label: "Client's Name",
-      name: "name",
-      type: "text",
-      placeholder: "Client's Name",
-      value: "",
-    },
-    {
-      label: "Client's Email",
-      name: "email",
-      type: "text",
-      placeholder: "Client's Email",
-      value: "",
-    },
-    {
-      label: "City",
-      name: "clientCity",
-      type: "text",
-      placeholder: "Client's City",
-      value: "",
-    },
-    {
-      label: "Post Code",
-      name: "clientCode",
-      type: "text",
-      placeholder: "Post Code",
-      value: "",
-    },
-    {
-      label: "Country",
-      name: "clientCountry",
-      type: "text",
-      placeholder: "Client Country",
-      value: "",
-    },
-    {
-      label: "Inovice Date",
-      name: "invoiceData",
-      type: "date",
-      placeholder: "Select date",
-      value: "",
-    },
-    {
-      label: "Payment Terms",
-      name: "paymentTerms",
+      label: "Status",
+      name: "status",
       type: "select",
-      placeholder: "Payment",
+      placeholder: "Description",
       value: "",
-      options: paymentOptions,
+      options: statusOptions,
+    },
+    {
+      label: "Amount",
+      name: "amount",
+      type: "number",
+      placeholder: "Enter amount",
+      value: "",
     },
   ];
   const handleSubmit = (values, { resetForm }) => {
-    console.log(values);
+    const generatedCode = generateId();
+    const invoiceData = {
+      code: generatedCode,
+      user: values.user,
+      amount: values.amount,
+      status: values.status,
+      description: values.description,
+    };
+    console.log(invoiceData);
+    navigate("/");
     resetForm();
   };
 
@@ -116,14 +77,11 @@ function InvoicesForms() {
         <div className="font-bold text-blue-600 mt-10 mb-3"> Bill Form</div>
       </div>
       {/* Bill Form */}
-      <Forms title="" formData={billForm} onSubmit={handleSubmit} />
-      {/* Bill To*/}
       <Forms
-        title="Bill To"
-        formData={billToData}
+        formData={billForm}
+        onSubmit={handleSubmit}
         btnText="Create"
         hasButton
-        onSubmit={handleSubmit}
       />
     </div>
   );
